@@ -13,11 +13,10 @@ namespace Infrastructure.Repostories
             this.context = context;
         }
 
-        public async Task<Person> CreatPerson(Person person)
+        public async Task CreatePerson(Person person)
         {
             context.Add(person);
             await context.SaveChangesAsync();
-            return person;
         }
 
         public async Task DeletePerson(string id)
@@ -33,7 +32,7 @@ namespace Infrastructure.Repostories
             return await context.Persons.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<ICollection<Person>> GetPersons()
+        public async Task<IEnumerable<Person?>?> GetPersons()
         {
             return await context.Persons.ToListAsync();
         }
