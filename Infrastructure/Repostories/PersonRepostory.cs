@@ -27,7 +27,7 @@ namespace Infrastructure.Repostories
             await context.SaveChangesAsync();
         }
 
-        public async Task<Person> GetPersonById(string id)
+        public async Task<Person?> GetPersonById(string id)
         {
             return await context.Persons.FirstOrDefaultAsync(x => x.Id == id);
         }

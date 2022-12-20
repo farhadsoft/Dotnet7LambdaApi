@@ -25,9 +25,9 @@ namespace Infrastructure.Repostories
             await _redis.SetAddAsync("Persons", result);
         }
 
-        public Task DeletePerson(string id)
+        public async Task DeletePerson(string id)
         {
-            throw new NotImplementedException();
+            await _redis.StringGetDeleteAsync(id);
         }
 
         public async Task<Person?> GetPersonById(string id)
@@ -50,9 +50,18 @@ namespace Infrastructure.Repostories
             return null;
         }
 
-        public Task<Person> UpdatePerson(string id, Person person)
+        public async Task<Person> UpdatePerson(string id, Person person)
         {
-            throw new NotImplementedException();
+            var oldPerson = await _redis.StringGetAsync(id);
+            var result = JsonSerializer.Deserialize<Person>(oldPerson);
+
+            result.Phone = person.Phone;
+            result.Name = person.Name;
+            result.Country = person.Country;
+
+            await _redis.StringSetAsync(id, JsonSerializer.Serialize<Person>(result));
+
+            return result;
         }
     }
 }
